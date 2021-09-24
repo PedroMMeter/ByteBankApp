@@ -11,11 +11,12 @@ class ByteBankApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
+        primaryColor: Palette.darkGreen,
         buttonTheme: ButtonThemeData(
-          buttonColor: Colors.blueAccent[700],
+          buttonColor: Colors.green[700],
         ),
         colorScheme: ColorScheme.fromSwatch(primarySwatch: Palette.darkGreen)
-            .copyWith(secondary: Colors.blueAccent[400]),
+            .copyWith(secondary: Colors.green[700]),
       ),
       home: Dashboard(),
     );

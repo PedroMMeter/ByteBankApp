@@ -28,7 +28,7 @@ class Dashboard extends StatelessWidget {
                 width: 150,
                 height: 100,
                 padding: const EdgeInsets.all(10.0),
-                color: Colors.green[900],
+                color: Theme.of(context).primaryColor,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
