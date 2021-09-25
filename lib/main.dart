@@ -1,5 +1,4 @@
 import 'package:bytebonk/palette.dart';
-import 'package:bytebonk/screens/newContact.dart';
 import 'package:flutter/material.dart';
 import 'package:bytebonk/screens/dashboard.dart';
 
@@ -18,7 +17,7 @@ class ByteBankApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSwatch(primarySwatch: Palette.darkGreen)
             .copyWith(secondary: Colors.green[700]),
       ),
-      home: RegisterContact(),
+      home: Dashboard(),
     );
   }
 }
