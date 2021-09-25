@@ -20,7 +20,7 @@ class TextModel extends StatelessWidget {
         ),
         keyboardType: type,
         style: TextStyle(
-          fontSize: 20,
+          fontSize: 24,
         ),
       ),
     );

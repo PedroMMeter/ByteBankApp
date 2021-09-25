@@ -1,9 +1,10 @@
+import 'package:bytebonk/models/contact.dart';
 import 'package:flutter/material.dart';
 import '../components/textModel.dart';
 
 const _appBarTitle = 'Novo Contato';
 const _nameLabel = 'Nome';
-const _nameHint = 'Nome do Produto';
+const _nameHint = 'Nome do Contato';
 const _accountLabel = 'Número da Conta';
 const _accountHint = '0000';
 const _keyboardType = TextInputType.number;
@@ -28,20 +29,38 @@ class _RegisterContactState extends State<RegisterContact> {
           _nameController,
           _nameLabel,
           _nameHint,
-        ),new TextModel(
+        ),
+        new TextModel(
           _accountController,
           _accountLabel,
           _accountHint,
           type: _keyboardType,
         ),
-        Center(
-          child: ElevatedButton(
-              onPressed: () {},
-              child: Text('Cadastrar'),
+        Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: SizedBox(
+            width: double.maxFinite,
+            height: 50,
+            child: ElevatedButton(
+              onPressed: () => _createContact(context),
+              child: Text(
+                'Cadastrar',
+                style: TextStyle(fontSize: 24),
+              ),
+            ),
           ),
         ),
       ]),
     );
   }
 
+  void _createContact(BuildContext context) {
+    final name = _nameController.text;
+    final account = int.tryParse(_accountController.text);
+
+    if (name != '' && account != null) {
+      final createdContact = Contact(name, account);
+      Navigator.pop(context, createdContact);
+    }
+  }
 }
