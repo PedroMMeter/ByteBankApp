@@ -25,13 +25,11 @@ class _ContactsListState extends State<ContactsList> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          final Future<Contact?> future=
-              Navigator.push(context, MaterialPageRoute(builder: (context){
-                return RegisterContact();
-              }));
-          future.then((recievedContact){
+          final Future<Contact?> future = Navigator.push(context,
+              MaterialPageRoute(builder: (context) => RegisterContact()));
+          future.then((recievedContact) {
             Future.delayed(Duration(milliseconds: 700), () {
-              setState((){
+              setState(() {
                 widget._lContact.add(recievedContact!);
               });
             });
@@ -51,8 +49,14 @@ class ContactData extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(_contact.name, style:  TextStyle(fontSize: 24),),
-      subtitle: Text('${_contact.account}', style: TextStyle(fontSize: 16),),
+      title: Text(
+        _contact.name,
+        style: TextStyle(fontSize: 24),
+      ),
+      subtitle: Text(
+        '${_contact.account}',
+        style: TextStyle(fontSize: 16),
+      ),
     );
   }
 }
