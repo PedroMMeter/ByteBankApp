@@ -1,3 +1,4 @@
+import 'package:bytebonk/database/dao/contact_dao.dart';
 import 'package:bytebonk/models/contact.dart';
 import 'package:flutter/material.dart';
 import '../components/textModel.dart';
@@ -17,6 +18,7 @@ class RegisterContact extends StatefulWidget {
 class _RegisterContactState extends State<RegisterContact> {
   final _nameController = TextEditingController();
   final _accountController = TextEditingController();
+  final ContactDao _dao = new ContactDao();
 
   @override
   Widget build(BuildContext context) {
@@ -59,8 +61,8 @@ class _RegisterContactState extends State<RegisterContact> {
     final account = int.tryParse(_accountController.text);
 
     if (name != '' && account != null) {
-      final createdContact = Contact(name, account);
-      Navigator.pop(context, createdContact);
+      final createdContact = Contact(0, name, account);
+      _dao.salvar(createdContact).then((id) =>Navigator.pop(context));
     }
   }
 }

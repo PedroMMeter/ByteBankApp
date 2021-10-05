@@ -1,15 +1,18 @@
+import 'package:bytebonk/database/dao/contact_dao.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 //função criar banco dbPath => nome da variavel
-void createDatabase(){
-  getDatabasesPath().then((dbPath) {
-    final String path = join(dbPath, 'bytebonk.db'); //nesse caso, é uma função que junta as tabelas
-    openDatabase(path, onCreate: (db, version) {
-      db.execute('CREATE TABLE contatos( '
-          'id INTEGER PRIMARY KEY, '
-          'nome TEXT,'
-          'numero_contato INTEGER)');
-    }, version: 1);
-  });
+Future<Database> getDatabase() async {
+  final String path = join(await getDatabasesPath(), 'bytebank.db');
+
+  return openDatabase(
+    path,
+    onCreate: (db, version) {
+      db.execute(ContactDao.tableSQL);
+    },
+    version: 1,
+    onDowngrade: onDatabaseDowngradeDelete,
+  );
 }
+

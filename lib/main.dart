@@ -2,7 +2,9 @@ import 'package:bytebonk/palette.dart';
 import 'package:flutter/material.dart';
 import 'package:bytebonk/screens/dashboard.dart';
 
-void main() => runApp(ByteBankApp());
+void main() {
+  runApp(ByteBankApp());
+}
 
 class ByteBankApp extends StatelessWidget {
   // This widget is the root of your application.
