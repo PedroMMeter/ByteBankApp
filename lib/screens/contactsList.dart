@@ -11,7 +11,8 @@ class ContactsList extends StatefulWidget {
 }
 
 class _ContactsListState extends State<ContactsList> {
-final ContactDao _dao = new ContactDao();
+  final ContactDao _dao = new ContactDao();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,9 +21,10 @@ final ContactDao _dao = new ContactDao();
       ),
       body: FutureBuilder(
         initialData: [],
-        future: Future.delayed(Duration(milliseconds: 700)).then((value) => _dao.buscar()),
+        future: Future.delayed(Duration(milliseconds: 700))
+            .then((value) => _dao.buscar()),
         builder: (context, AsyncSnapshot snapshot) {
-          switch (snapshot.connectionState) { // ignore: missing_enum_constant_in_switch
+          switch (snapshot.connectionState) {// ignore: missing_enum_constant_in_switch
             case ConnectionState.waiting:
               return Center(
                 child: Column(
@@ -57,8 +59,9 @@ final ContactDao _dao = new ContactDao();
             MaterialPageRoute(
               builder: (context) => RegisterContact(),
             ),
-          ).then((value) {
-            setState((){});
+          )
+              .then((value) {
+            setState(() {});
           });
         },
         child: Icon(Icons.add),
@@ -69,6 +72,7 @@ final ContactDao _dao = new ContactDao();
 
 class ContactData extends StatelessWidget {
   final Contact _contact;
+  final ContactDao dao = new ContactDao();
 
   ContactData(this._contact);
 
@@ -76,13 +80,32 @@ class ContactData extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
-        title: Text(
-          _contact.name,
-          style: TextStyle(fontSize: 24),
-        ),
-        subtitle: Text(
-          '${_contact.account}',
-          style: TextStyle(fontSize: 16),
+        title: Text(_contact.name, style: TextStyle(fontSize: 24)),
+        subtitle: Text('${_contact.account}', style: TextStyle(fontSize: 16)),
+        trailing: Container(
+          width: 100,
+          child: Row(
+            children: <Widget>[
+              IconButton(
+                icon: Icon(Icons.edit),
+                onPressed: () {
+                  dao.alterar(_contact);
+                },
+              ),
+              IconButton(
+                icon: Icon(Icons.delete),
+                color: Colors.red,
+                onPressed: () {
+                  dao.deletar(_contact.id);
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => ContactsList()
+                    )
+                  );
+                },
+              )
+            ],
+          ),
         ),
       ),
     );
