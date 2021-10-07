@@ -39,8 +39,9 @@ class _ContactsListState extends State<ContactsList> {
               break;
             case ConnectionState.done:
               final List<Contact> lContact = snapshot.data;
-              return ListView.builder(
+              return ListView.separated(
                 itemCount: lContact.length,
+                separatorBuilder: (context, index) => Divider(),
                 itemBuilder: (context, index) {
                   final Contact contact = lContact[index];
                   return ContactData(contact);
@@ -79,35 +80,31 @@ class ContactData extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: ListTile(
-        title: Text(_contact.name, style: TextStyle(fontSize: 24)),
-        subtitle: Text('${_contact.account}', style: TextStyle(fontSize: 16)),
-        trailing: Container(
-          width: 100,
-          child: Row(
-            children: <Widget>[
-              IconButton(
-                icon: Icon(Icons.edit),
-                onPressed: () {
-                  dao.alterar(_contact);
-                },
-              ),
-              IconButton(
+        child: ListTile(
+      title: Text(_contact.name, style: TextStyle(fontSize: 24)),
+      subtitle: Text('${_contact.account}', style: TextStyle(fontSize: 16)),
+      trailing: Container(
+        width: 100,
+        child: Row(
+          children: <Widget>[
+            IconButton(
+              icon: Icon(Icons.edit),
+              onPressed: () {},
+            ),
+            IconButton(
                 icon: Icon(Icons.delete),
                 color: Colors.red,
                 onPressed: () {
                   dao.deletar(_contact.id);
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => ContactsList()
-                    )
-                  );
-                },
-              )
-            ],
-          ),
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ContactsList()
+                      ));
+                }),
+          ],
         ),
       ),
-    );
+    ));
   }
 }
