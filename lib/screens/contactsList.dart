@@ -1,5 +1,6 @@
 import 'package:bytebonk/database/dao/contact_dao.dart';
 import 'package:bytebonk/models/contact.dart';
+import 'package:bytebonk/screens/alterContact.dart';
 import 'package:bytebonk/screens/newContact.dart';
 import 'package:flutter/material.dart';
 
@@ -89,22 +90,29 @@ class ContactData extends StatelessWidget {
           children: <Widget>[
             IconButton(
               icon: Icon(Icons.edit),
-              onPressed: () {},
+              onPressed: () => _sendDataForward(context),
             ),
             IconButton(
                 icon: Icon(Icons.delete),
                 color: Colors.red,
                 onPressed: () {
                   dao.deletar(_contact.id);
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ContactsList()
-                      ));
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => ContactsList()));
                 }),
           ],
         ),
       ),
     ));
   }
+  void _sendDataForward(BuildContext context) {
+    final contactToAlter = Contact(_contact.id, _contact.name, _contact.account);
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => AlterContact(contactToAlter: contactToAlter),
+        ));
+  }
 }
+
+
