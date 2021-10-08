@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../components/textModel.dart';
 import 'contactsList.dart';
 
-const _appBarTitle = 'Novo Contato';
+const _appBarTitle = 'Alterar Contato';
 const _nameLabel = 'Nome';
 const _nameHint = 'Nome do Contato';
 const _accountLabel = 'Número da Conta';
