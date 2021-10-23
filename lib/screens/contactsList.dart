@@ -1,12 +1,12 @@
+import 'package:bytebonk/components/progress.dart';
 import 'package:bytebonk/database/dao/contact_dao.dart';
 import 'package:bytebonk/models/contact.dart';
 import 'package:bytebonk/screens/alterContact.dart';
+import 'package:bytebonk/screens/form_transacao.dart';
 import 'package:bytebonk/screens/newContact.dart';
 import 'package:flutter/material.dart';
 
 class ContactsList extends StatefulWidget {
-  //final List<Contact> _lContact = [];
-
   @override
   State<ContactsList> createState() => _ContactsListState();
 }
@@ -27,15 +27,7 @@ class _ContactsListState extends State<ContactsList> {
         builder: (context, AsyncSnapshot snapshot) {
           switch (snapshot.connectionState) {// ignore: missing_enum_constant_in_switch
             case ConnectionState.waiting:
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CircularProgressIndicator(),
-                    Text('Loading!!!'),
-                  ],
-                ),
-              );
+              return Progress();
               // ignore: dead_code
               break;
             case ConnectionState.done:
@@ -45,7 +37,11 @@ class _ContactsListState extends State<ContactsList> {
                 separatorBuilder: (context, index) => Divider(),
                 itemBuilder: (context, index) {
                   final Contact contact = lContact[index];
-                  return ContactData(contact);
+                  return ContactData(
+                    contact,
+                    onClick: () => Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => TransactionForm(contact))),
+                  );
                 },
               );
               // ignore: dead_code
@@ -75,13 +71,15 @@ class _ContactsListState extends State<ContactsList> {
 class ContactData extends StatelessWidget {
   final Contact _contact;
   final ContactDao dao = new ContactDao();
+  final Function onClick;
 
-  ContactData(this._contact);
+  ContactData(this._contact, {required this.onClick});
 
   @override
   Widget build(BuildContext context) {
     return Card(
         child: ListTile(
+      onTap: () => onClick(),
       title: Text(_contact.name, style: TextStyle(fontSize: 24)),
       subtitle: Text('${_contact.account}', style: TextStyle(fontSize: 16)),
       trailing: Container(
@@ -105,8 +103,10 @@ class ContactData extends StatelessWidget {
       ),
     ));
   }
+
   void _sendDataForward(BuildContext context) {
-    final contactToAlter = Contact(_contact.id, _contact.name, _contact.account);
+    final contactToAlter =
+        Contact(_contact.id, _contact.name, _contact.account);
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -114,5 +114,3 @@ class ContactData extends StatelessWidget {
         ));
   }
 }
-
-
