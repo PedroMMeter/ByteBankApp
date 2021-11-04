@@ -19,7 +19,7 @@ class TransactionForm extends StatefulWidget {
 
 class _TransactionFormState extends State<TransactionForm> {
   final _valueController = TextEditingController();
-  final TransactionWebClent transactionClient = TransactionWebClent();
+  final transactionClient = TransactionWebClient();
 
   @override
   Widget build(BuildContext context) {

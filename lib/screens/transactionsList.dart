@@ -1,10 +1,13 @@
 import 'package:bytebonk/components/centralMessage.dart';
 import 'package:bytebonk/components/progress.dart';
-import 'package:bytebonk/http/webClient.dart';
+import 'package:bytebonk/http/transaction_webclient/transactionClient.dart';
 import 'package:flutter/material.dart';
 import 'package:bytebonk/models/transaction.dart';
 
+
 class TransactionList extends StatelessWidget {
+  final transactionWebClient = TransactionWebClient();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,7 +16,7 @@ class TransactionList extends StatelessWidget {
       ),
       body: FutureBuilder<List<TransactionData>>(
           future:
-              Future.delayed(Duration(seconds: 1)).then((value) => findAll()),
+              Future.delayed(Duration(seconds: 1)).then((value) => transactionWebClient.findAll()),
           builder: (context, snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.none:

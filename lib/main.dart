@@ -4,7 +4,6 @@ import 'package:bytebonk/screens/dashboard.dart';
 
 void main() {
   runApp(ByteBankApp());
-
 }
 
 class ByteBankApp extends StatelessWidget {
