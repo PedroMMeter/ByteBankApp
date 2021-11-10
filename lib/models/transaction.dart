@@ -1,7 +1,7 @@
 import './contact.dart';
 
 class TransactionData {
-  final double value;
+  final double? value;
   final Contact contact;
 
   TransactionData(this.value, this.contact);

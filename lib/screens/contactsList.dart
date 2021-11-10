@@ -94,9 +94,32 @@ class ContactData extends StatelessWidget {
                 icon: Icon(Icons.delete),
                 color: Colors.red,
                 onPressed: () {
-                  dao.deletar(_contact.id);
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => ContactsList()));
+                  showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                            title:
+                                Text('Deseja realmente excluir o contato: ${_contact.name}'),
+                            content:
+                              Text('(A ação é irreversivel)'),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: Text('CANCELAR'),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  dao.deletar(_contact.id);
+                                  Navigator.pop(context);
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              ContactsList()));
+                                },
+                                child: Text('CONFIRMAR'),
+                              ),
+                            ],
+                          ));
                 }),
           ],
         ),

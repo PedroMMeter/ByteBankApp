@@ -1,4 +1,5 @@
 import 'package:bytebonk/components/textModel.dart';
+import 'package:bytebonk/components/transactionAuthDialog.dart';
 import 'package:bytebonk/http/transaction_webclient/transactionClient.dart';
 import 'package:bytebonk/models/contact.dart';
 import 'package:bytebonk/models/transaction.dart';
@@ -20,6 +21,8 @@ class TransactionForm extends StatefulWidget {
 class _TransactionFormState extends State<TransactionForm> {
   final _valueController = TextEditingController();
   final transactionClient = TransactionWebClient();
+  final snackSucess = SnackBar(content: Text('TRANSAÇÃO BEM SUCEDIDA', style: TextStyle(fontSize: 20),));
+  final snackFailure = SnackBar(content: Text('FALHA AO AUTENTICAR', style: TextStyle(fontSize: 20),));
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +40,8 @@ class _TransactionFormState extends State<TransactionForm> {
                 style: TextStyle(
                   fontSize: 32.0,
                 ),
-              ),Text(
+              ),
+              Text(
                 widget.contact.account.toString(),
                 style: TextStyle(
                   fontSize: 30.0,
@@ -59,7 +63,20 @@ class _TransactionFormState extends State<TransactionForm> {
             width: double.maxFinite,
             height: 50,
             child: ElevatedButton(
-              onPressed: () {_createdTransaction(context);},
+              onPressed: () {
+                final value = double.tryParse(_valueController.text);
+                final createdTransaction = TransactionData(value!, widget.contact);
+                showDialog(
+                    context: context,
+                    builder: (contextDialog) {
+                      return TransactionAuthDialog(
+                        onConfirm: (String password) {
+                          _createdTransaction(context, password, createdTransaction);
+                        },
+                      );
+                    });
+
+              }, //_createdTransaction(context);
               child: Text(
                 'Transferir',
                 style: TextStyle(fontSize: 24),
@@ -70,9 +87,16 @@ class _TransactionFormState extends State<TransactionForm> {
       ]),
     );
   }
-  void _createdTransaction(BuildContext context) {
-    final value = double.tryParse(_valueController.text);
-    final createdTransaction = TransactionData(value!, widget.contact);
-    transactionClient.saveTransaction(createdTransaction).then((transaction) => Navigator.pop(context));
-}
+
+  void _createdTransaction(BuildContext context, password, createdTransaction) async{
+    Future.delayed(Duration(seconds: 1));
+    transactionClient
+        .saveTransaction(createdTransaction, password)
+        .then((transaction){
+      ScaffoldMessenger.of(context).showSnackBar(snackSucess);
+      Navigator.pop(context);
+    }).catchError((e){
+      ScaffoldMessenger.of(context).showSnackBar(snackFailure);
+    });
+  }
 }
