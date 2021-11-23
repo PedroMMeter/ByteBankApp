@@ -19,7 +19,7 @@ class TransactionWebClient {
     return transactions;
   }
 
-  Future<TransactionData> saveTransaction(TransactionData transaction, String password) async {
+  Future<TransactionData?> saveTransaction(TransactionData transaction, String password) async {
     final String jTransaction = jsonEncode(transaction.toJson());
 
     final Response response = await client.post(Uri.parse(baseURL),
@@ -28,9 +28,8 @@ class TransactionWebClient {
           'password': password,
         },
         body: jTransaction);
-    if(response.statusCode != 200) {
-      throw new Exception('Ocorreu um erro: ${response.statusCode}');
-    }
-      return TransactionData.fromJson(jsonDecode(response.body));
+
+    return TransactionData.fromJson(jsonDecode(response.body));
   }
 }
+
